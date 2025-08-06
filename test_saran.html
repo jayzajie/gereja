@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="test-token">
+    <title>Test Form Saran</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .form-group { margin-bottom: 20px; }
+        .form-input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        .btn { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .btn:disabled { background: #ccc; }
+        .error-message { color: red; font-size: 0.9em; margin-top: 5px; display: none; }
+        .verification-input-group { display: flex; gap: 10px; }
+        .notification { position: fixed; top: 20px; right: 20px; padding: 15px; border-radius: 5px; color: white; z-index: 9999; }
+        .notification.success { background: green; }
+        .notification.error { background: red; }
+    </style>
+</head>
+<body>
+    <h1>Test Form Saran & Masukan</h1>
+    
+    <form id="saranForm">
+        <input type="hidden" name="email" id="hiddenEmail" value="">
+        
+        <div class="form-group">
+            <label>Nama:</label>
+            <input type="text" id="nama" name="nama" class="form-input" required>
+            <div class="error-message" id="error-nama">Nama harus minimal 5 karakter</div>
+        </div>
+        
+        <div class="form-group">
+            <label>No HP:</label>
+            <input type="text" id="no_hp" name="no_hp" class="form-input" required>
+            <div class="error-message" id="error-no_hp">Nomor HP harus minimal 5 karakter</div>
+        </div>
+        
+        <div class="form-group">
+            <label>Email:</label>
+            <input type="email" id="email" name="email_display" class="form-input" required>
+            <div class="error-message" id="error-email">Email tidak valid</div>
+        </div>
+        
+        <div id="emailVerificationSection" style="display: none;">
+            <div class="form-group">
+                <label>Kode Verifikasi:</label>
+                <div class="verification-input-group">
+                    <input type="text" id="verification_code" name="verification_code" class="form-input" maxlength="6">
+                    <button type="button" id="resendCode" class="btn">Kirim Ulang</button>
+                </div>
+                <div class="error-message" id="error-verification">Kode verifikasi tidak valid</div>
+                <div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+                    <p>Kode verifikasi telah dikirim ke email Anda. Silakan cek inbox atau folder spam.</p>
+                    <p id="resendTimer" style="display: none;">Kirim ulang dalam <span id="countdown">60</span> detik</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>Saran / Masukan:</label>
+            <textarea id="saran" name="saran" class="form-input" rows="5" required></textarea>
+            <div class="error-message" id="error-saran">Saran harus minimal 5 karakter</div>
+        </div>
+        
+        <button type="submit" class="btn" id="submitBtn">Kirim Saran</button>
+    </form>
+
+    <script>
+        let isEmailVerified = false;
+        let resendCountdown = 0;
+        
+        const emailInput = document.getElementById('email');
+        const hiddenEmailInput = document.getElementById('hiddenEmail');
+        const emailVerificationSection = document.getElementById('emailVerificationSection');
+        const verificationCodeInput = document.getElementById('verification_code');
+        const resendCodeBtn = document.getElementById('resendCode');
+        const resendTimer = document.getElementById('resendTimer');
+        const countdown = document.getElementById('countdown');
+        
+        // Test email verification
+        emailInput.addEventListener('blur', function() {
+            if (this.value && validateEmail(this.value)) {
+                console.log('Sending verification code to:', this.value);
+                // Simulate sending verification code
+                emailVerificationSection.style.display = 'block';
+                showNotification('Kode verifikasi telah dikirim ke email Anda', 'success');
+                startResendTimer();
+            }
+        });
+        
+        // Test verification code
+        verificationCodeInput.addEventListener('input', function() {
+            if (this.value.length === 6) {
+                console.log('Verifying code:', this.value);
+                // Simulate verification success
+                if (this.value === '123456') {
+                    isEmailVerified = true;
+                    hiddenEmailInput.value = emailInput.value;
+                    this.style.borderColor = '#28a745';
+                    this.style.backgroundColor = '#f8fff9';
+                    document.getElementById('error-verification').style.display = 'none';
+                    showNotification('Email berhasil diverifikasi', 'success');
+                } else {
+                    isEmailVerified = false;
+                    this.style.borderColor = '#dc3545';
+                    this.style.backgroundColor = '#fff8f8';
+                    document.getElementById('error-verification').style.display = 'block';
+                }
+            }
+        });
+        
+        // Form submission
+        document.getElementById('saranForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!isEmailVerified) {
+                showNotification('Silakan verifikasi email terlebih dahulu', 'error');
+                return;
+            }
+            
+            console.log('Form submitted successfully!');
+            showNotification('Saran berhasil dikirim!', 'success');
+        });
+        
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        function startResendTimer() {
+            resendCountdown = 60;
+            resendCodeBtn.disabled = true;
+            resendTimer.style.display = 'block';
+            
+            const timer = setInterval(() => {
+                resendCountdown--;
+                countdown.textContent = resendCountdown;
+                
+                if (resendCountdown <= 0) {
+                    clearInterval(timer);
+                    resendCodeBtn.disabled = false;
+                    resendTimer.style.display = 'none';
+                }
+            }, 1000);
+        }
+        
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+:root,
+[data-bs-theme=light] {
+  /* Ubah warna primary sesuai keinginan */
+  --bs-primary: #3f51b5; /* Ganti dengan warna yang diinginkan */
+  --bs-primary-rgb: 63, 81, 181;
+  --bs-primary-text-emphasis: #1a2163;
+  --bs-primary-bg-subtle: #e0e3f5;
+  --bs-primary-border-subtle: #c1c7eb;
+  
+  /* Warna lain yang mungkin ingin diubah */
+  --bs-secondary: #757575;
+  --bs-secondary-rgb: 117, 117, 117;
+  --bs-success: #4caf50;
+  --bs-success-rgb: 76, 175, 80;
+  --bs-info: #03a9f4;
+  --bs-info-rgb: 3, 169, 244;
+  --bs-warning: #ff9800;
+  --bs-warning-rgb: 255, 152, 0;
+  --bs-danger: #f44336;
+  --bs-danger-rgb: 244, 67, 54;
+  
+  /* Warna background */
+  --bs-body-bg: #f5f5f9;
+  --bs-body-bg-rgb: 245, 245, 249;
+  
+  /* Warna teks */
+  --bs-body-color: #4e5965;
+  --bs-body-color-rgb: 78, 89, 101;
+  --bs-heading-color: #384551;
+}
+
+/* Kustomisasi tambahan untuk menu dan sidebar */
+.bg-menu-theme {
+  background-color: #fff !important;
+}
+
+.bg-menu-theme .menu-inner > .menu-item.active > .menu-link {
+  background-color: rgba(63, 81, 181, 0.16) !important;
+  color: var(--bs-primary) !important;
+}
+
+.bg-menu-theme .menu-inner > .menu-item.active:before {
+  background: var(--bs-primary) !important;
+}
+
+/* Kustomisasi card dan elemen lainnya */
+.card {
+  box-shadow: 0 2px 6px 0 rgba(67, 89, 113, 0.12);
+}
+
+[data-bs-theme=dark] {
+  --bs-primary: #5c6bc0; /* Versi lebih terang dari warna primary untuk tema gelap */
+  --bs-primary-rgb: 92, 107, 192;
+  --bs-primary-text-emphasis: #a5a7ff;
+  --bs-primary-bg-subtle: #151633;
+  --bs-primary-border-subtle: #3f4199;
+  
+  /* Warna background untuk tema gelap */
+  --bs-body-bg: #2b2c40;
+  --bs-body-bg-rgb: 43, 44, 64;
+  
+  /* Warna teks untuk tema gelap */
+  --bs-body-color: #bdc1c5;
+  --bs-body-color-rgb: 189, 193, 197;
+  --bs-heading-color: #fff;
+}

@@ -1,0 +1,179 @@
+@extends('layouts.admin')
+
+@section('title', 'Manajemen Informasi')
+
+@section('content')
+<div class="container-xxl flex-grow-1 container-p-y">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h4 class="fw-bold py-3 mb-2" style="color: #8B4513;">
+                        <span class="text-muted fw-light">Manajemen /</span> Informasi
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 col-12 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title d-flex align-items-start justify-content-between">
+                        <div class="avatar flex-shrink-0">
+                            <i class="bx bx-info-circle text-primary" style="font-size: 2rem;"></i>
+                        </div>
+                    </div>
+                    <span class="fw-semibold d-block mb-1">Total Informasi</span>
+                    <h3 class="card-title mb-2">{{ $informations->total() }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title d-flex align-items-start justify-content-between">
+                        <div class="avatar flex-shrink-0">
+                            <i class="bx bx-check-circle text-success" style="font-size: 2rem;"></i>
+                        </div>
+                    </div>
+                    <span class="fw-semibold d-block mb-1">Dipublikasikan</span>
+                    <h3 class="card-title mb-2">{{ \App\Models\Information::published()->count() }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title d-flex align-items-start justify-content-between">
+                        <div class="avatar flex-shrink-0">
+                            <i class="bx bx-star text-warning" style="font-size: 2rem;"></i>
+                        </div>
+                    </div>
+                    <span class="fw-semibold d-block mb-1">Featured</span>
+                    <h3 class="card-title mb-2">{{ \App\Models\Information::featured()->count() }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title d-flex align-items-start justify-content-between">
+                        <div class="avatar flex-shrink-0">
+                            <i class="bx bx-edit text-info" style="font-size: 2rem;"></i>
+                        </div>
+                    </div>
+                    <span class="fw-semibold d-block mb-1">Draft</span>
+                    <h3 class="card-title mb-2">{{ \App\Models\Information::where('status', 'draft')->count() }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex gap-2 flex-wrap">
+                <a href="{{ route('information.create') }}" class="btn btn-primary">
+                    <i class="bx bx-plus me-1"></i>Tambah Informasi
+                </a>
+                <a href="{{ route('information.export.excel') }}" class="btn btn-success">
+                    <i class="bx bx-download me-1"></i>Export Excel
+                </a>
+                <a href="{{ route('information.export.pdf') }}" class="btn btn-danger">
+                    <i class="bx bx-file-pdf me-1"></i>Export PDF
+                </a>
+                <button class="btn btn-info" onclick="window.print()">
+                    <i class="bx bx-printer me-1"></i>Print
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="GET" action="{{ route('information.index') }}">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Cari</label>
+                        <input type="text" class="form-control" name="search" value="{{ request('search') }}"
+                               placeholder="Cari judul, konten, atau penulis...">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Kategori</label>
+                        <select class="form-select" name="category">
+                            <option value="">Semua Kategori</option>
+                            @foreach($categories as $key => $value)
+                                <option value="{{ $key }}" {{ request('category') == $key ? 'selected' : '' }}>
+                                    {{ $value }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Status</label>
+                        <select class="form-select" name="status">
+                            <option value="">Semua Status</option>
+                            @foreach($statuses as $key => $value)
+                                <option value="{{ $key }}" {{ request('status') == $key ? 'selected' : '' }}>
+                                    {{ $value }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">&nbsp;</label>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bx bx-search me-1"></i>Filter
+                            </button>
+                            <a href="{{ route('information.index') }}" class="btn btn-outline-secondary">
+                                <i class="bx bx-refresh me-1"></i>Reset
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success/Error Messages -->
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    <!-- Table Display Removed -->
+    <div class="card">
+        <div class="card-body text-center py-5">
+            <i class="bx bx-table display-1 text-muted mb-3"></i>
+            <h5 class="text-muted">Tampilan Tabel Telah Dihapus</h5>
+            <p class="text-muted">
+                Tampilan tabel untuk semua informasi termasuk Kegiatan Jemaat telah dihapus.<br>
+                Gunakan dashboard view untuk melihat informasi dalam format kartu yang lebih menarik.
+            </p>
+            <div class="d-flex gap-2 justify-content-center">
+                <a href="{{ route('information.dashboard') }}" class="btn btn-primary">
+                    <i class="bx bx-grid me-1"></i>Lihat Dashboard
+                </a>
+                <a href="{{ route('information.dashboard', ['category' => 'kegiatan']) }}" class="btn btn-outline-primary">
+                    <i class="bx bx-calendar-event me-1"></i>Kegiatan Jemaat
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
