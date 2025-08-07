@@ -120,81 +120,38 @@
 @section('content')
     <div class="pengurus-header">
         <div class="pengurus-container">
-            <h1 class="pengurus-title">Pengurus PPGT Periode Tahun 2025</h1>
-        </div>
-    </div>
-
-    <div class="pengurus-container">
-        <div class="section-header">
-            <div class="section-title">Pengurus KSB</div>
-        </div>
-        
-        <div class="pengurus-grid">
-            <div class="pengurus-card" data-aos="fade-up" data-aos-delay="100">
-                <div class="pengurus-img-container">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="pengurus-info">
-                    <div class="pengurus-name">Full Name</div>
-                    <div class="pengurus-position">Ketua</div>
-                </div>
+        @if($pengurus->count() > 0)
+            <div class="section-header">
+                <div class="section-title">Pengurus PPGT Periode {{ $pengurus->first()->periode_mulai }} - {{ $pengurus->first()->periode_selesai }}</div>
             </div>
-
-            <div class="pengurus-card" data-aos="fade-up" data-aos-delay="200">
-                <div class="pengurus-img-container">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="pengurus-info">
-                    <div class="pengurus-name">Full Name</div>
-                    <div class="pengurus-position">Sekretaris</div>
-                </div>
+            
+            <div class="pengurus-grid">
+                @foreach($pengurus as $index => $item)
+                    <div class="pengurus-card" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
+                        <div class="pengurus-img-container">
+                            @if($item->foto)
+                                <img src="{{ $item->foto_url }}" alt="{{ $item->nama_lengkap }}" style="width: 100%; height: 100%; object-fit: cover;">
+                            @else
+                                <i class="fas fa-user"></i>
+                            @endif
+                        </div>
+                        <div class="pengurus-info">
+                            <div class="pengurus-name">{{ $item->nama_lengkap }}</div>
+                            <div class="pengurus-position">{{ $item->jabatan }}</div>
+                            @if($item->deskripsi)
+                                <div class="pengurus-description" style="font-size: 0.9rem; color: #888; margin-top: 0.5rem;">
+                                    {{ Str::limit($item->deskripsi, 100) }}
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
             </div>
-
-            <div class="pengurus-card" data-aos="fade-up" data-aos-delay="300">
-                <div class="pengurus-img-container">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="pengurus-info">
-                    <div class="pengurus-name">Full Name</div>
-                    <div class="pengurus-position">Bendahara</div>
-                </div>
+        @else
+            <div class="section-header">
+                <div class="section-title">Pengurus PPGT</div>
+                <p class="text-center text-muted">Data pengurus belum tersedia.</p>
             </div>
-        </div>
-
-        <div class="section-header">
-            <div class="section-title">Nama Jabatan Pengurus</div>
-        </div>
-        
-        <div class="pengurus-grid">
-            <div class="pengurus-card" data-aos="fade-up" data-aos-delay="400">
-                <div class="pengurus-img-container">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="pengurus-info">
-                    <div class="pengurus-name">Full Name</div>
-                    <div class="pengurus-position">Jabatan</div>
-                </div>
-            </div>
-
-            <div class="pengurus-card" data-aos="fade-up" data-aos-delay="500">
-                <div class="pengurus-img-container">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="pengurus-info">
-                    <div class="pengurus-name">Full Name</div>
-                    <div class="pengurus-position">Jabatan</div>
-                </div>
-            </div>
-
-            <div class="pengurus-card" data-aos="fade-up" data-aos-delay="600">
-                <div class="pengurus-img-container">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="pengurus-info">
-                    <div class="pengurus-name">Full Name</div>
-                    <div class="pengurus-position">Jabatan</div>
-                </div>
-            </div>
-        </div>
+        @endif
     </div>
 @endsection

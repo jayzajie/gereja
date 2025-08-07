@@ -4,209 +4,6 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/kegiatan-jemaat.css') }}">
-<style>
-    /* Header styling */
-    .kegiatan-header {
-        background: linear-gradient(135deg, #997939 0%, #b59756 100%);
-        color: white;
-        padding: 80px 0;
-        text-align: center;
-        position: relative;
-        margin-bottom: 50px;
-    }
-
-    .kegiatan-header::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-image: url('{{ asset('images/gereja-toraja.jpg') }}');
-        background-size: cover;
-        background-position: center;
-        opacity: 0.2;
-        z-index: 1;
-    }
-
-    .kegiatan-header::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, rgba(153, 121, 57, 0.8) 0%, rgba(181, 151, 86, 0.8) 100%);
-        z-index: 2;
-    }
-
-    .kegiatan-container {
-        position: relative;
-        z-index: 3;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-    }
-
-    .kegiatan-title {
-        font-size: 3rem;
-        font-weight: bold;
-        margin-bottom: 15px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
-
-    .kegiatan-subtitle {
-        font-size: 1.2rem;
-        opacity: 0.9;
-        font-weight: 300;
-    }
-
-    /* Grid layout yang lebih terstruktur */
-    .kegiatan-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        gap: 30px;
-        padding: 40px 0;
-    }
-
-    /* Card styling yang lebih modern */
-    .kegiatan-card {
-        background: white;
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        cursor: pointer;
-        position: relative;
-        border: 1px solid rgba(153, 121, 57, 0.1);
-    }
-
-    .kegiatan-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 16px 48px rgba(153, 121, 57, 0.2);
-        border-color: rgba(153, 121, 57, 0.3);
-    }
-
-    .kegiatan-img-container {
-        position: relative;
-        height: 220px;
-        overflow: hidden;
-    }
-
-    .kegiatan-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-    }
-
-    .kegiatan-card:hover .kegiatan-img {
-        transform: scale(1.05);
-    }
-
-    .kegiatan-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 100%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        display: flex;
-        align-items: flex-end;
-        padding: 20px;
-    }
-
-    .kegiatan-card:hover .kegiatan-overlay {
-        opacity: 1;
-    }
-
-    .overlay-text {
-        color: white;
-        font-weight: 600;
-        font-size: 1rem;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-    }
-
-    .kegiatan-info {
-        padding: 25px;
-    }
-
-    .kegiatan-name {
-        font-size: 1.4rem;
-        font-weight: 700;
-        color: #997939;
-        margin-bottom: 12px;
-        line-height: 1.3;
-    }
-
-    .kegiatan-desc {
-        color: #666;
-        line-height: 1.6;
-        font-size: 0.95rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .kegiatan-meta {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 15px;
-        padding-top: 15px;
-        border-top: 1px solid #f0f0f0;
-    }
-
-    .kegiatan-schedule {
-        font-size: 0.85rem;
-        color: #997939;
-        font-weight: 600;
-    }
-
-    .kegiatan-location {
-        font-size: 0.85rem;
-        color: #888;
-    }
-
-    /* Responsive design */
-    @media (max-width: 768px) {
-        .kegiatan-grid {
-            grid-template-columns: 1fr;
-            gap: 20px;
-            padding: 20px 0;
-        }
-        
-        .kegiatan-title {
-            font-size: 2.2rem;
-        }
-        
-        .kegiatan-subtitle {
-            font-size: 1rem;
-        }
-        
-        .kegiatan-img-container {
-            height: 200px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .kegiatan-container {
-            padding: 0 15px;
-        }
-        
-        .kegiatan-info {
-            padding: 20px;
-        }
-        
-        .kegiatan-name {
-            font-size: 1.2rem;
-        }
-    }
-</style>
 @endpush
 
 @section('body-class', 'kegiatan-page')
@@ -228,10 +25,10 @@
                     <!-- Kegiatan Card from Database -->
                     <div class="kegiatan-card" onclick="window.location.href='{{ route('kegiatan-detail', $activity->id) }}'">
                         <div class="kegiatan-img-container">
-                            @if($activity->image)
-                                <img src="{{ asset('storage/' . $activity->image) }}" alt="{{ $activity->title }}" class="kegiatan-img">
+                            @if($activity->image && file_exists(storage_path('app/public/' . $activity->image)))
+                                <img src="{{ asset('storage/' . $activity->image) }}" alt="{{ $activity->title }}" class="kegiatan-img" loading="lazy">
                             @else
-                                <img src="{{ asset('images/gereja-toraja.jpg') }}" alt="{{ $activity->title }}" class="kegiatan-img">
+                                <img src="{{ asset('images/gereja-toraja.jpg') }}" alt="{{ $activity->title }}" class="kegiatan-img" loading="lazy">
                             @endif
                             <div class="kegiatan-overlay">
                                 <div class="overlay-text">📖 Klik untuk detail lengkap</div>
@@ -241,8 +38,10 @@
                             <div class="kegiatan-name">{{ $activity->title }}</div>
                             <div class="kegiatan-desc">{{ Str::limit($activity->content, 120) }}</div>
                             <div class="kegiatan-meta">
-                                <div class="kegiatan-schedule">📅 Terjadwal</div>
-                                <div class="kegiatan-location">📍 Gereja</div>
+                                <div class="kegiatan-schedule">
+                                    📅 {{ $activity->publish_date ? $activity->publish_date->format('d M Y') : 'Terjadwal' }}
+                                </div>
+                                <div class="kegiatan-location">📍 {{ $activity->subcategory ?? 'Gereja' }}</div>
                             </div>
                         </div>
                     </div>
@@ -352,6 +151,15 @@
                 </div>
             @endif
         </div>
+
+        @if(!isset($activities) || $activities->count() == 0)
+            <!-- Message when no activities are available -->
+            <div class="no-activities-message">
+                <h4>📅 Kegiatan Akan Segera Hadir</h4>
+                <p>Saat ini belum ada kegiatan yang terjadwal. Silakan kembali lagi nanti untuk melihat kegiatan-kegiatan terbaru dari jemaat kami.</p>
+                <p>Untuk informasi lebih lanjut, hubungi sekretariat gereja.</p>
+            </div>
+        @endif
     </div>
 @endsection
 
@@ -556,52 +364,49 @@ function showActivityDetail(activityType) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Smooth scroll untuk navigasi
+    // Enhanced card interactions
     const cards = document.querySelectorAll('.kegiatan-card');
     cards.forEach(card => {
         card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-8px) scale(1.02)';
+            this.style.transform = 'translateY(-8px)';
         });
-        
+
         card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
+            this.style.transform = 'translateY(0)';
         });
     });
-    
-    // Remove any large logo elements
-    function removeLargeLogos() {
-        const logoSelectors = [
-            '.large-logo', '.background-logo', '.watermark-logo',
-            '.page-logo', '.overlay-logo', '.floating-logo',
-            '[class*="logo-large"]', '[class*="church-logo"]'
-        ];
 
-        logoSelectors.forEach(selector => {
-            const elements = document.querySelectorAll(selector);
-            elements.forEach(el => el.remove());
-        });
-
-        const images = document.querySelectorAll('img');
-        images.forEach(img => {
-            if (img.naturalWidth > 500 && img.naturalHeight > 500) {
-                if (!img.closest('.kegiatan-card')) {
-                    img.style.maxWidth = '100%';
-                    img.style.maxHeight = '250px';
-                    img.style.objectFit = 'cover';
-                }
+    // Lazy loading for images
+    const images = document.querySelectorAll('.kegiatan-img');
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.style.opacity = '0';
+                img.style.transition = 'opacity 0.3s ease';
+                img.onload = () => {
+                    img.style.opacity = '1';
+                };
+                observer.unobserve(img);
             }
         });
+    });
 
-        document.body.style.backgroundImage = 'none';
-        const containers = document.querySelectorAll('.container, .main-content, .content-wrapper');
-        containers.forEach(container => {
-            container.style.backgroundImage = 'none';
+    images.forEach(img => imageObserver.observe(img));
+
+    // Smooth scrolling for better UX
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
         });
-    }
-
-    removeLargeLogos();
-    setTimeout(removeLargeLogos, 100);
-    setTimeout(removeLargeLogos, 500);
+    });
 });
 </script>
 @endpush

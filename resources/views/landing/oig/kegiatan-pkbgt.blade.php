@@ -19,61 +19,62 @@
 
     <!-- Kegiatan Content -->
     <div class="program-container">
-        <!-- Kegiatan Grid -->
-        <div class="kegiatan-grid">
-            <!-- Kegiatan 1 -->
-            <div class="kegiatan-card">
-                <div class="kegiatan-img-container">
-                    <img src="{{ asset('images/gereja-toraja.jpg') }}" alt="Retreat Kaum Bapak" class="kegiatan-img">
-                    <div class="kegiatan-overlay">
-                        <div class="kegiatan-date">12-14 Maret 2025</div>
+        @if($kegiatan->count() > 0)
+            <!-- Kegiatan Grid -->
+            <div class="kegiatan-grid">
+                @foreach($kegiatan as $item)
+                    <div class="kegiatan-card">
+                        <div class="kegiatan-img-container">
+                            @if($item->gambar)
+                                <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->nama_kegiatan }}" class="kegiatan-img">
+                            @else
+                                <img src="{{ asset('images/gereja-toraja.jpg') }}" alt="{{ $item->nama_kegiatan }}" class="kegiatan-img">
+                            @endif
+                            <div class="kegiatan-overlay">
+                                <div class="kegiatan-date">
+                                    {{ \Carbon\Carbon::parse($item->tanggal_kegiatan)->format('d M Y') }}
+                                    @if($item->waktu_mulai)
+                                        <br><small>{{ \Carbon\Carbon::parse($item->waktu_mulai)->format('H:i') }}
+                                        @if($item->waktu_selesai)
+                                            - {{ \Carbon\Carbon::parse($item->waktu_selesai)->format('H:i') }}
+                                        @endif
+                                        </small>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <div class="kegiatan-content">
+                            <h3 class="kegiatan-title">{{ $item->nama_kegiatan }}</h3>
+                            <p class="kegiatan-desc">{{ $item->deskripsi }}</p>
+                            <div class="kegiatan-meta">
+                                @if($item->tempat)
+                                    <span class="kegiatan-location"><i class="fas fa-map-marker-alt"></i> {{ $item->tempat }}</span>
+                                @endif
+                                @if($item->jumlah_peserta)
+                                    <span class="kegiatan-participants"><i class="fas fa-users"></i> {{ $item->jumlah_peserta }} Peserta</span>
+                                @endif
+                                @if($item->penanggung_jawab)
+                                    <span class="kegiatan-pic"><i class="fas fa-user-tie"></i> {{ $item->penanggung_jawab }}</span>
+                                @endif
+                                <span class="kegiatan-status status-{{ $item->status }}">
+                                    <i class="fas fa-circle"></i> {{ ucfirst($item->status) }}
+                                </span>
+                            </div>
+                            @if($item->catatan)
+                                <div class="kegiatan-notes">
+                                    <small><strong>Catatan:</strong> {{ $item->catatan }}</small>
+                                </div>
+                            @endif
+                        </div>
                     </div>
-                </div>
-                <div class="kegiatan-content">
-                    <h3 class="kegiatan-title">Retreat Kaum Bapak</h3>
-                    <p class="kegiatan-desc">Kegiatan retreat tahunan untuk kaum bapak yang bertujuan untuk memperkuat persekutuan dan meningkatkan kualitas spiritual. Kegiatan ini meliputi ibadah bersama, sharing pengalaman, dan kegiatan outdoor yang membangun karakter.</p>
-                    <div class="kegiatan-meta">
-                        <span class="kegiatan-location"><i class="fas fa-map-marker-alt"></i> Camp Rantepao</span>
-                        <span class="kegiatan-participants"><i class="fas fa-users"></i> 50 Bapak</span>
-                    </div>
-                </div>
+                @endforeach
             </div>
-
-            <!-- Kegiatan 2 -->
-            <div class="kegiatan-card">
-                <div class="kegiatan-img-container">
-                    <img src="{{ asset('images/gereja-toraja.jpg') }}" alt="Seminar Kepemimpinan Kristen" class="kegiatan-img">
-                    <div class="kegiatan-overlay">
-                        <div class="kegiatan-date">25 April 2025</div>
-                    </div>
-                </div>
-                <div class="kegiatan-content">
-                    <h3 class="kegiatan-title">Seminar Kepemimpinan Kristen</h3>
-                    <p class="kegiatan-desc">Seminar khusus untuk mengembangkan kemampuan kepemimpinan Kristen bagi kaum bapak dalam keluarga dan gereja. Materi meliputi kepemimpinan pelayan, komunikasi efektif, dan manajemen konflik yang alkitabiah.</p>
-                    <div class="kegiatan-meta">
-                        <span class="kegiatan-location"><i class="fas fa-map-marker-alt"></i> Aula Gereja</span>
-                        <span class="kegiatan-participants"><i class="fas fa-users"></i> 70 Bapak</span>
-                    </div>
-                </div>
+        @else
+            <div class="text-center py-5">
+                <h4>Kegiatan PKBGT</h4>
+                <p class="text-muted">Data kegiatan belum tersedia untuk tahun {{ date('Y') }}.</p>
             </div>
-
-            <!-- Kegiatan 3 -->
-            <div class="kegiatan-card">
-                <div class="kegiatan-img-container">
-                    <img src="{{ asset('images/gereja-toraja.jpg') }}" alt="Bakti Sosial PKBGT" class="kegiatan-img">
-                    <div class="kegiatan-overlay">
-                        <div class="kegiatan-date">10 Juni 2025</div>
-                    </div>
-                </div>
-                <div class="kegiatan-content">
-                    <h3 class="kegiatan-title">Bakti Sosial PKBGT</h3>
-                    <p class="kegiatan-desc">Program bakti sosial rutin yang dilakukan PKBGT untuk membantu masyarakat sekitar. Kegiatan meliputi pembagian sembako, renovasi rumah tidak layak huni, dan bantuan pendidikan sebagai wujud kasih Kristus.</p>
-                    <div class="kegiatan-meta">
-                        <span class="kegiatan-location"><i class="fas fa-map-marker-alt"></i> Desa Sekitar</span>
-                        <span class="kegiatan-participants"><i class="fas fa-users"></i> 40 Bapak</span>
-                    </div>
-                </div>
-            </div>
+        @endif
 
             <!-- Kegiatan 4 -->
             <div class="kegiatan-card">

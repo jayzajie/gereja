@@ -42,6 +42,11 @@ class LandingController extends Controller
     }
 
     // Informasi methods
+    public function informasi()
+    {
+        return view('landing.informasi.index');
+    }
+
     public function pendetaJemaat()
     {
         $pastors = \App\Models\Pastor::orderBy('ordination_date')->get();
@@ -99,102 +104,122 @@ class LandingController extends Controller
     // OIG methods
     public function pkbgt()
     {
-        return view('landing.oig.pkbgt');
+        $pengurus = \App\Models\OigPengurus::byOrganisasi('PKBGT')->active()->ordered()->get();
+        $programKerja = \App\Models\OigProgramKerja::byOrganisasi('PKBGT')->byTahun(date('Y'))->ordered()->take(6)->get();
+        $kegiatan = \App\Models\OigKegiatan::byOrganisasi('PKBGT')->byTahun(date('Y'))->ordered()->take(6)->get();
+
+        return view('landing.oig.pkbgt', compact('pengurus', 'programKerja', 'kegiatan'));
     }
 
     public function programKerjaPkbgt()
     {
-        // Ambil data program kerja PKBGT dari Information model
-        $programKerja = \App\Models\Information::where('category', 'program-kerja')
-            ->where('status', 'published')
-            ->where(function($query) {
-                $query->where('content', 'LIKE', '%PKBGT%')
-                      ->orWhere('content', 'LIKE', '%Persekutuan Kaum Bapak%');
-            })
-            ->orderByRaw("CASE
-                WHEN priority = 'high' THEN 3
-                WHEN priority = 'medium' THEN 2
-                WHEN priority = 'low' THEN 1
-                ELSE 0 END DESC")
-            ->orderBy('publish_date', 'desc')
-            ->get();
+        $programKerja = \App\Models\OigProgramKerja::byOrganisasi('PKBGT')->byTahun(date('Y'))->ordered()->get();
 
         return view('landing.oig.program-kerja-pkbgt', compact('programKerja'));
     }
 
+    public function pengurusPkbgt()
+    {
+        $pengurus = \App\Models\OigPengurus::byOrganisasi('PKBGT')->active()->ordered()->get();
+
+        return view('landing.oig.pengurus-pkbgt', compact('pengurus'));
+    }
+
+    public function kegiatanPkbgt()
+    {
+        $kegiatan = \App\Models\OigKegiatan::byOrganisasi('PKBGT')->byTahun(date('Y'))->ordered()->get();
+
+        return view('landing.oig.kegiatan-pkbgt', compact('kegiatan'));
+    }
+
     public function pwgt()
     {
-        return view('landing.oig.pwgt');
+        $pengurus = \App\Models\OigPengurus::byOrganisasi('PWGT')->active()->ordered()->get();
+        $programKerja = \App\Models\OigProgramKerja::byOrganisasi('PWGT')->byTahun(date('Y'))->ordered()->take(6)->get();
+        $kegiatan = \App\Models\OigKegiatan::byOrganisasi('PWGT')->byTahun(date('Y'))->ordered()->take(6)->get();
+
+        return view('landing.oig.pwgt', compact('pengurus', 'programKerja', 'kegiatan'));
     }
 
     public function programKerjaPwgt()
     {
-        // Ambil data program kerja PWGT dari Information model
-        $programKerja = \App\Models\Information::where('category', 'program-kerja')
-            ->where('status', 'published')
-            ->where(function($query) {
-                $query->where('content', 'LIKE', '%PWGT%')
-                      ->orWhere('content', 'LIKE', '%Persekutuan Wanita%');
-            })
-            ->orderByRaw("CASE
-                WHEN priority = 'high' THEN 3
-                WHEN priority = 'medium' THEN 2
-                WHEN priority = 'low' THEN 1
-                ELSE 0 END DESC")
-            ->orderBy('publish_date', 'desc')
-            ->get();
+        $programKerja = \App\Models\OigProgramKerja::byOrganisasi('PWGT')->byTahun(date('Y'))->ordered()->get();
 
         return view('landing.oig.program-kerja-pwgt', compact('programKerja'));
     }
 
+    public function pengurusPwgt()
+    {
+        $pengurus = \App\Models\OigPengurus::byOrganisasi('PWGT')->active()->ordered()->get();
+
+        return view('landing.oig.pengurus-pwgt', compact('pengurus'));
+    }
+
+    public function kegiatanPwgt()
+    {
+        $kegiatan = \App\Models\OigKegiatan::byOrganisasi('PWGT')->byTahun(date('Y'))->ordered()->get();
+
+        return view('landing.oig.kegiatan-pwgt', compact('kegiatan'));
+    }
+
     public function ppgt()
     {
-        return view('landing.oig.ppgt');
+        $pengurus = \App\Models\OigPengurus::byOrganisasi('PPGT')->active()->ordered()->get();
+        $programKerja = \App\Models\OigProgramKerja::byOrganisasi('PPGT')->byTahun(date('Y'))->ordered()->take(6)->get();
+        $kegiatan = \App\Models\OigKegiatan::byOrganisasi('PPGT')->byTahun(date('Y'))->ordered()->take(6)->get();
+
+        return view('landing.oig.ppgt', compact('pengurus', 'programKerja', 'kegiatan'));
     }
 
     public function programKerjaPpgt()
     {
-        // Ambil data program kerja PPGT dari Information model
-        $programKerja = \App\Models\Information::where('category', 'program-kerja')
-            ->where('status', 'published')
-            ->where(function($query) {
-                $query->where('content', 'LIKE', '%PPGT%')
-                      ->orWhere('content', 'LIKE', '%Persekutuan Pemuda%');
-            })
-            ->orderByRaw("CASE
-                WHEN priority = 'high' THEN 3
-                WHEN priority = 'medium' THEN 2
-                WHEN priority = 'low' THEN 1
-                ELSE 0 END DESC")
-            ->orderBy('publish_date', 'desc')
-            ->get();
+        $programKerja = \App\Models\OigProgramKerja::byOrganisasi('PPGT')->byTahun(date('Y'))->ordered()->get();
 
         return view('landing.oig.program-kerja-ppgt', compact('programKerja'));
     }
 
+    public function pengurusPpgt()
+    {
+        $pengurus = \App\Models\OigPengurus::byOrganisasi('PPGT')->active()->ordered()->get();
+
+        return view('landing.oig.pengurus-ppgt', compact('pengurus'));
+    }
+
+    public function kegiatanPpgt()
+    {
+        $kegiatan = \App\Models\OigKegiatan::byOrganisasi('PPGT')->byTahun(date('Y'))->ordered()->get();
+
+        return view('landing.oig.kegiatan-ppgt', compact('kegiatan'));
+    }
+
     public function smgt()
     {
-        return view('landing.oig.smgt');
+        $pengurus = \App\Models\OigPengurus::byOrganisasi('SMGT')->active()->ordered()->get();
+        $programKerja = \App\Models\OigProgramKerja::byOrganisasi('SMGT')->byTahun(date('Y'))->ordered()->take(6)->get();
+        $kegiatan = \App\Models\OigKegiatan::byOrganisasi('SMGT')->byTahun(date('Y'))->ordered()->take(6)->get();
+
+        return view('landing.oig.smgt', compact('pengurus', 'programKerja', 'kegiatan'));
     }
 
     public function programKerjaSmgt()
     {
-        // Ambil data program kerja SMGT dari Information model
-        $programKerja = \App\Models\Information::where('category', 'program-kerja')
-            ->where('status', 'published')
-            ->where(function($query) {
-                $query->where('content', 'LIKE', '%SMGT%')
-                      ->orWhere('content', 'LIKE', '%Sekolah Minggu%');
-            })
-            ->orderByRaw("CASE
-                WHEN priority = 'high' THEN 3
-                WHEN priority = 'medium' THEN 2
-                WHEN priority = 'low' THEN 1
-                ELSE 0 END DESC")
-            ->orderBy('publish_date', 'desc')
-            ->get();
+        $programKerja = \App\Models\OigProgramKerja::byOrganisasi('SMGT')->byTahun(date('Y'))->ordered()->get();
 
         return view('landing.oig.program-kerja-smgt', compact('programKerja'));
+    }
+
+    public function pengurusSmgt()
+    {
+        $pengurus = \App\Models\OigPengurus::byOrganisasi('SMGT')->active()->ordered()->get();
+
+        return view('landing.oig.pengurus-smgt', compact('pengurus'));
+    }
+
+    public function kegiatanSmgt()
+    {
+        $kegiatan = \App\Models\OigKegiatan::byOrganisasi('SMGT')->byTahun(date('Y'))->ordered()->get();
+
+        return view('landing.oig.kegiatan-smgt', compact('kegiatan'));
     }
 
     // Contact methods

@@ -18,48 +18,57 @@
 
     <!-- Program Kerja Content -->
     <div class="program-container">
-        <!-- Program Kerja Grid -->
-        <div class="program-grid">
-            <!-- Program Kerja Box 1 -->
-            <div class="program-box">
-                <h3 class="program-box-title">Nama Program Kerja</h3>
-                <div class="program-list">
-                    <div class="program-item">1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-                    <div class="program-item">2. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-                    <div class="program-item">3. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-                </div>
+        @if($programKerja->count() > 0)
+            <!-- Program Kerja Grid -->
+            <div class="program-grid">
+                @foreach($programKerja as $program)
+                    <div class="program-box">
+                        <h3 class="program-box-title">{{ $program->nama_program }}</h3>
+                        <div class="program-list">
+                            <div class="program-item">
+                                <strong>Deskripsi:</strong> {{ $program->deskripsi }}
+                            </div>
+                            @if($program->tujuan)
+                                <div class="program-item">
+                                    <strong>Tujuan:</strong> {{ $program->tujuan }}
+                                </div>
+                            @endif
+                            @if($program->sasaran)
+                                <div class="program-item">
+                                    <strong>Sasaran:</strong> {{ $program->sasaran }}
+                                </div>
+                            @endif
+                            @if($program->penanggung_jawab)
+                                <div class="program-item">
+                                    <strong>Penanggung Jawab:</strong> {{ $program->penanggung_jawab }}
+                                </div>
+                            @endif
+                            @if($program->tanggal_mulai && $program->tanggal_selesai)
+                                <div class="program-item">
+                                    <strong>Periode:</strong> {{ \Carbon\Carbon::parse($program->tanggal_mulai)->format('d M Y') }} - {{ \Carbon\Carbon::parse($program->tanggal_selesai)->format('d M Y') }}
+                                </div>
+                            @endif
+                            @if($program->anggaran)
+                                <div class="program-item">
+                                    <strong>Anggaran:</strong> Rp {{ number_format($program->anggaran, 0, ',', '.') }}
+                                </div>
+                            @endif
+                            <div class="program-item">
+                                <strong>Status:</strong>
+                                <span class="badge badge-{{ $program->status == 'aktif' ? 'success' : ($program->status == 'selesai' ? 'primary' : 'secondary') }}">
+                                    {{ ucfirst($program->status) }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
-
-            <!-- Program Kerja Box 2 -->
-            <div class="program-box">
-                <h3 class="program-box-title">Nama Program Kerja</h3>
-                <div class="program-list">
-                    <div class="program-item">1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-                    <div class="program-item">2. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-                    <div class="program-item">3. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-                </div>
+        @else
+            <div class="text-center py-5">
+                <h4>Program Kerja PPGT</h4>
+                <p class="text-muted">Data program kerja belum tersedia untuk tahun {{ date('Y') }}.</p>
             </div>
-
-            <!-- Program Kerja Box 3 -->
-            <div class="program-box">
-                <h3 class="program-box-title">Nama Program Kerja</h3>
-                <div class="program-list">
-                    <div class="program-item">1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-                    <div class="program-item">2. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-                    <div class="program-item">3. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-                </div>
-            </div>
-
-            <!-- Program Kerja Box 4 -->
-            <div class="program-box">
-                <h3 class="program-box-title">Nama Program Kerja</h3>
-                <div class="program-list">
-                    <div class="program-item">1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-                    <div class="program-item">2. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-                    <div class="program-item">3. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-                </div>
-            </div>
-        </div>
+        @endif
     </div>
 
     <style>

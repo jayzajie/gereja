@@ -102,6 +102,7 @@ Route::prefix('profil-gereja')->group(function () {
 
 // Informasi Routes
 Route::prefix('informasi')->group(function () {
+    Route::get('/', [App\Http\Controllers\LandingController::class, 'informasi'])->name('informasi');
     Route::get('/pendeta-jemaat', [App\Http\Controllers\LandingController::class, 'pendetaJemaat'])->name('pendeta-jemaat');
     Route::get('/kegiatan-jemaat', [App\Http\Controllers\LandingController::class, 'kegiatanGereja'])->name('kegiatan-jemaat');
     Route::get('/kegiatan-jemaat/{id}', [App\Http\Controllers\LandingController::class, 'kegiatanDetail'])->name('kegiatan-detail');
@@ -122,39 +123,23 @@ Route::prefix('oig')->name('oig.')->group(function () {
 
     // PKBGT sub-routes
     Route::get('/pkbgt/program-kerja', [App\Http\Controllers\LandingController::class, 'programKerjaPkbgt'])->name('pkbgt.program-kerja');
-    Route::get('/pkbgt/pengurus', function () {
-        return view('landing.oig.pengurus-pkbgt');
-    })->name('pkbgt.pengurus');
-    Route::get('/pkbgt/kegiatan', function () {
-        return view('landing.oig.kegiatan-pkbgt');
-    })->name('pkbgt.kegiatan');
+    Route::get('/pkbgt/pengurus', [App\Http\Controllers\LandingController::class, 'pengurusPkbgt'])->name('pkbgt.pengurus');
+    Route::get('/pkbgt/kegiatan', [App\Http\Controllers\LandingController::class, 'kegiatanPkbgt'])->name('pkbgt.kegiatan');
 
     // PWGT sub-routes
     Route::get('/pwgt/program-kerja', [App\Http\Controllers\LandingController::class, 'programKerjaPwgt'])->name('pwgt.program-kerja');
-    Route::get('/pwgt/pengurus', function () {
-        return view('landing.oig.pengurus-pwgt');
-    })->name('pwgt.pengurus');
-    Route::get('/pwgt/kegiatan', function () {
-        return view('landing.oig.kegiatan-pwgt');
-    })->name('pwgt.kegiatan');
+    Route::get('/pwgt/pengurus', [App\Http\Controllers\LandingController::class, 'pengurusPwgt'])->name('pwgt.pengurus');
+    Route::get('/pwgt/kegiatan', [App\Http\Controllers\LandingController::class, 'kegiatanPwgt'])->name('pwgt.kegiatan');
 
     // PPGT sub-routes
     Route::get('/ppgt/program-kerja', [App\Http\Controllers\LandingController::class, 'programKerjaPpgt'])->name('ppgt.program-kerja');
-    Route::get('/ppgt/pengurus', function () {
-        return view('landing.oig.pengurus-ppgt');
-    })->name('ppgt.pengurus');
-    Route::get('/ppgt/kegiatan', function () {
-        return view('landing.oig.kegiatan-ppgt');
-    })->name('ppgt.kegiatan');
+    Route::get('/ppgt/pengurus', [App\Http\Controllers\LandingController::class, 'pengurusPpgt'])->name('ppgt.pengurus');
+    Route::get('/ppgt/kegiatan', [App\Http\Controllers\LandingController::class, 'kegiatanPpgt'])->name('ppgt.kegiatan');
 
     // SMGT sub-routes
     Route::get('/smgt/program-kerja', [App\Http\Controllers\LandingController::class, 'programKerjaSmgt'])->name('smgt.program-kerja');
-    Route::get('/smgt/pengurus', function () {
-        return view('landing.oig.pengurus-smgt');
-    })->name('smgt.pengurus');
-    Route::get('/smgt/kegiatan', function () {
-        return view('landing.oig.kegiatan-smgt');
-    })->name('smgt.kegiatan');
+    Route::get('/smgt/pengurus', [App\Http\Controllers\LandingController::class, 'pengurusSmgt'])->name('smgt.pengurus');
+    Route::get('/smgt/kegiatan', [App\Http\Controllers\LandingController::class, 'kegiatanSmgt'])->name('smgt.kegiatan');
 });
 
 // Backward compatibility routes (without oig prefix for landing pages)
@@ -165,36 +150,20 @@ Route::get('/smgt', [App\Http\Controllers\LandingController::class, 'smgt'])->na
 
 // Backward compatibility for sub-routes
 Route::get('/pkbgt/program-kerja', [App\Http\Controllers\LandingController::class, 'programKerjaPkbgt'])->name('program-kerja-pkbgt');
-Route::get('/pkbgt/pengurus', function () {
-    return view('landing.oig.pengurus-pkbgt');
-})->name('pengurus-pkbgt');
-Route::get('/pkbgt/kegiatan', function () {
-    return view('landing.oig.kegiatan-pkbgt');
-})->name('kegiatan-pkbgt');
+Route::get('/pkbgt/pengurus', [App\Http\Controllers\LandingController::class, 'pengurusPkbgt'])->name('pengurus-pkbgt');
+Route::get('/pkbgt/kegiatan', [App\Http\Controllers\LandingController::class, 'kegiatanPkbgt'])->name('kegiatan-pkbgt');
 
 Route::get('/pwgt/program-kerja', [App\Http\Controllers\LandingController::class, 'programKerjaPwgt'])->name('program-kerja-pwgt');
-Route::get('/pwgt/pengurus', function () {
-    return view('landing.oig.pengurus-pwgt');
-})->name('pengurus-pwgt');
-Route::get('/pwgt/kegiatan', function () {
-    return view('landing.oig.kegiatan-pwgt');
-})->name('kegiatan-pwgt');
+Route::get('/pwgt/pengurus', [App\Http\Controllers\LandingController::class, 'pengurusPwgt'])->name('pengurus-pwgt');
+Route::get('/pwgt/kegiatan', [App\Http\Controllers\LandingController::class, 'kegiatanPwgt'])->name('kegiatan-pwgt');
 
 Route::get('/ppgt/program-kerja', [App\Http\Controllers\LandingController::class, 'programKerjaPpgt'])->name('program-kerja-ppgt');
-Route::get('/ppgt/pengurus', function () {
-    return view('landing.oig.pengurus-ppgt');
-})->name('pengurus-ppgt');
-Route::get('/ppgt/kegiatan', function () {
-    return view('landing.oig.kegiatan-ppgt');
-})->name('kegiatan-ppgt');
+Route::get('/ppgt/pengurus', [App\Http\Controllers\LandingController::class, 'pengurusPpgt'])->name('pengurus-ppgt');
+Route::get('/ppgt/kegiatan', [App\Http\Controllers\LandingController::class, 'kegiatanPpgt'])->name('kegiatan-ppgt');
 
 Route::get('/smgt/program-kerja', [App\Http\Controllers\LandingController::class, 'programKerjaSmgt'])->name('program-kerja-smgt');
-Route::get('/smgt/pengurus', function () {
-    return view('landing.oig.pengurus-smgt');
-})->name('pengurus-smgt');
-Route::get('/smgt/kegiatan', function () {
-    return view('landing.oig.kegiatan-smgt');
-})->name('kegiatan-smgt');
+Route::get('/smgt/pengurus', [App\Http\Controllers\LandingController::class, 'pengurusSmgt'])->name('pengurus-smgt');
+Route::get('/smgt/kegiatan', [App\Http\Controllers\LandingController::class, 'kegiatanSmgt'])->name('kegiatan-smgt');
 
 // Contact Routes
 Route::prefix('contact')->group(function () {
@@ -282,11 +251,27 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('worship-schedules', App\Http\Controllers\WorshipScheduleController::class);
 
     // Admin OIG Routes
-    Route::prefix('admin/oig')->name('admin.oig.')->group(function () {
+    Route::prefix('oig')->name('admin.oig.')->group(function () {
+        // Main OIG Pages
         Route::get('/pkbgt', [App\Http\Controllers\Admin\OigController::class, 'pkbgt'])->name('pkbgt');
         Route::get('/pwgt', [App\Http\Controllers\Admin\OigController::class, 'pwgt'])->name('pwgt');
         Route::get('/ppgt', [App\Http\Controllers\Admin\OigController::class, 'ppgt'])->name('ppgt');
         Route::get('/smgt', [App\Http\Controllers\Admin\OigController::class, 'smgt'])->name('smgt');
+
+        // Pengurus CRUD Routes
+        Route::post('/pengurus', [App\Http\Controllers\Admin\OigController::class, 'storePengurus'])->name('pengurus.store');
+        Route::put('/pengurus/{id}', [App\Http\Controllers\Admin\OigController::class, 'updatePengurus'])->name('pengurus.update');
+        Route::delete('/pengurus/{id}', [App\Http\Controllers\Admin\OigController::class, 'deletePengurus'])->name('pengurus.delete');
+
+        // Program Kerja CRUD Routes
+        Route::post('/program-kerja', [App\Http\Controllers\Admin\OigController::class, 'storeProgramKerja'])->name('program-kerja.store');
+        Route::put('/program-kerja/{id}', [App\Http\Controllers\Admin\OigController::class, 'updateProgramKerja'])->name('program-kerja.update');
+        Route::delete('/program-kerja/{id}', [App\Http\Controllers\Admin\OigController::class, 'deleteProgramKerja'])->name('program-kerja.delete');
+
+        // Kegiatan CRUD Routes
+        Route::post('/kegiatan', [App\Http\Controllers\Admin\OigController::class, 'storeKegiatan'])->name('kegiatan.store');
+        Route::put('/kegiatan/{id}', [App\Http\Controllers\Admin\OigController::class, 'updateKegiatan'])->name('kegiatan.update');
+        Route::delete('/kegiatan/{id}', [App\Http\Controllers\Admin\OigController::class, 'deleteKegiatan'])->name('kegiatan.delete');
     });
 
 });

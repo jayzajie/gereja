@@ -83,7 +83,7 @@
                 </div>
 
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link">Informasi <i class="fas fa-chevron-down"></i></a>
+                    <a href="{{ route('informasi') }}" class="nav-link">Informasi <i class="fas fa-chevron-down"></i></a>
                     <div class="dropdown-content">
                         <a href="{{ route('pendeta-jemaat') }}">Pendeta Jemaat</a>
                         <a href="{{ route('kegiatan-jemaat') }}">Kegiatan Jemaat</a>
