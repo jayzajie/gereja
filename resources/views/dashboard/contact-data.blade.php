@@ -336,12 +336,28 @@
                                                 <td>{{ $member->email ?? '-' }}</td>
                                                 <td>{{ $member->pekerjaan ?? '-' }}</td>
                                                 <td>
-                                                    <span class="badge bg-{{ $member->status == 'active' ? 'success' : 'secondary' }}">
-                                                        {{ $member->status == 'active' ? 'Aktif' : 'Nonaktif' }}
+                                                    <span class="badge bg-{{ $member->status == 'active' ? 'success' : ($member->status == 'pending' ? 'warning' : 'secondary') }}">
+                                                        @if($member->status == 'active')
+                                                            Aktif
+                                                        @elseif($member->status == 'pending')
+                                                            Pending
+                                                        @elseif($member->status == 'inactive')
+                                                            Nonaktif
+                                                        @else
+                                                            {{ ucfirst($member->status) }}
+                                                        @endif
                                                     </span>
                                                 </td>
                                                 <td>
                                                     <div class="btn-group" role="group">
+                                                        @if($member->status == 'pending')
+                                                            <button class="btn btn-sm btn-success" onclick="updateStatus('member', {{ $member->id }}, 'active')" title="Approve">
+                                                                <i class="bx bx-check"></i>
+                                                            </button>
+                                                            <button class="btn btn-sm btn-danger" onclick="updateStatus('member', {{ $member->id }}, 'inactive')" title="Reject">
+                                                                <i class="bx bx-x"></i>
+                                                            </button>
+                                                        @endif
                                                         <button class="btn btn-sm btn-info" onclick="viewMemberDetail({{ $member->id }})" title="Lihat Detail">
                                                             <i class="bx bx-show"></i>
                                                         </button>
@@ -349,7 +365,7 @@
                                                             <button class="btn btn-sm btn-warning" onclick="updateStatus('member', {{ $member->id }}, 'inactive')" title="Nonaktifkan">
                                                                 <i class="bx bx-pause"></i>
                                                             </button>
-                                                        @else
+                                                        @elseif($member->status == 'inactive')
                                                             <button class="btn btn-sm btn-success" onclick="updateStatus('member', {{ $member->id }}, 'active')" title="Aktifkan">
                                                                 <i class="bx bx-play"></i>
                                                             </button>

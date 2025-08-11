@@ -11,6 +11,7 @@ use App\Models\Baptism;
 use App\Models\Suggestion;
 use App\Models\User;
 use Carbon\Carbon;
+use App\Mail\MemberStatusNotification;
 
 class DashboardController extends Controller
 {
@@ -177,10 +178,16 @@ class DashboardController extends Controller
 
     public function updateContactStatus(Request $request)
     {
+        // Dynamic validation based on type
+        $statusValidation = match($request->type) {
+            'member' => 'required|in:active,inactive,pending,approved,rejected',
+            default => 'required|in:approved,rejected,pending'
+        };
+
         $request->validate([
             'type' => 'required|in:marriage,baptism,member,suggestion',
             'id' => 'required|integer',
-            'status' => 'required|in:approved,rejected,pending'
+            'status' => $statusValidation
         ]);
 
         $type = $request->type;
@@ -203,8 +210,27 @@ class DashboardController extends Controller
 
                 case 'member':
                     $item = Member::findOrFail($id);
+                    $oldStatus = $item->status;
                     $item->update(['status' => $status]);
-                    $message = "Status anggota berhasil diubah menjadi " . ucfirst($status);
+
+                    // Send email notification if status changed and member has email
+                    if ($oldStatus !== $status && $item->email && in_array($status, ['active', 'inactive', 'approved', 'rejected'])) {
+                        try {
+                            \Mail::to($item->email)->send(new MemberStatusNotification($item, $status));
+                        } catch (\Exception $e) {
+                            \Log::error("Failed to send member notification: " . $e->getMessage());
+                        }
+                    }
+
+                    $statusText = match($status) {
+                        'active' => 'Aktif',
+                        'inactive' => 'Nonaktif',
+                        'pending' => 'Pending',
+                        'approved' => 'Disetujui',
+                        'rejected' => 'Ditolak',
+                        default => ucfirst($status)
+                    };
+                    $message = "Status anggota berhasil diubah menjadi " . $statusText;
                     break;
 
                 case 'suggestion':
